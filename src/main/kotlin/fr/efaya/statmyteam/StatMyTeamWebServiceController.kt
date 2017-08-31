@@ -17,7 +17,10 @@ class StatMyTeamWebServiceController(val gameRepository : GameRepository, val se
 
     @GetMapping("/games/{id}")
     fun retrieveGame(@PathVariable id:String): Game {
-        val game = gameRepository.findById(id) ?: throw GameNotFoundException("No game found with id : $id.")
+        val game = gameRepository.findById(id)
+        if (!game.isPresent) {
+            throw GameNotFoundException("No game found with id : $id.")
+        }
         return game.get()
     }
 
